@@ -7,6 +7,9 @@
  * Update History
  *
  * 06 Mar 2020 - djm - First release
+ * 31 Jul 2020 - djm - Fixed error in parms passed to the new PDO call
+ *                     Corrected variable used in final echo with the
+ *                     count of grants backed up
  *
  ***********************************************************************/
 declare(strict_types=1);
@@ -37,7 +40,7 @@ $opt = [PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION ,
 	   ];
 try {
 
-    $ourdb = new PDO ($dsn,HOSTNAME,DBPASSWORD,$opt);
+    $ourdb = new PDO ($dsn,DBUSER,DBPASSWORD,$opt);
 
 } catch (PDOException $e) {
 
@@ -106,6 +109,6 @@ fwrite($userout ,'FLUSH PRIVILEGES;' . PHP_EOL);  // make sure SQL knows about t
 fwrite($grantout,'FLUSH PRIVILEGES;' . PHP_EOL);  // make sure SQL knows about the new users and privileges
 fclose($userout);   // close our output file
 fclose($grantout);  // close our output file
-echo 'The grants for ' . count($users) . ' users were written to ' . $useroutfile . PHP_EOL;
+echo 'The grants for ' . count($users) . ' users were written to ' . USEROUTFILE . PHP_EOL;
 
 function add_quotes($str) {return sprintf("'%s'", $str);}
